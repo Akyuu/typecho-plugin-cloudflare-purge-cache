@@ -44,7 +44,7 @@ class CloudflarePurgeCache_Plugin implements Typecho_Plugin_Interface
         $element = new Typecho_Widget_Helper_Form_Element_Text('email', NULL, '', _t('E-mail'), '');
         $form->addInput($element);
 
-        $element = new Typecho_Widget_Helper_Form_Element_Text('api_key', NULL, '', _t('API Key'), '');
+        $element = new Typecho_Widget_Helper_Form_Element_Text('api_token', NULL, '', _t('API Token'), '');
         $form->addInput($element);
     }
 
@@ -55,9 +55,9 @@ class CloudflarePurgeCache_Plugin implements Typecho_Plugin_Interface
     public static function purge_cache() {
         $zone_id = Typecho_Widget::widget('Widget_Options')->plugin('CloudflarePurgeCache')->zone_id;
         $email = Typecho_Widget::widget('Widget_Options')->plugin('CloudflarePurgeCache')->email;
-        $api_key = Typecho_Widget::widget('Widget_Options')->plugin('CloudflarePurgeCache')->api_key;
+        $api_token = Typecho_Widget::widget('Widget_Options')->plugin('CloudflarePurgeCache')->api_token;
         
-        $headers = array("X-Auth-Email: $email", "X-Auth-Key: $api_key", "Content-Type: application/json");
+        $headers = array("X-Auth-Email: $email", "Authorization: Bearer $api_token", "Content-Type: application/json");
         $url = "https://api.cloudflare.com/client/v4/zones/$zone_id/purge_cache";
         $ch = curl_init();
 
